@@ -1,0 +1,2 @@
+# FinTech-Solution-BD-Prompt-Engineering-AI-Powered-Financial-Development-Tools
+FinTech Solution (BD) Prompt Engineering is a comprehensive repository demonstrating how prompt engineering can accelerate the development of financial tools and applications. This project showcases the synergy between domain expertise in finance, software development skills, and AI assistance to create powerful, custom financial solutions.
