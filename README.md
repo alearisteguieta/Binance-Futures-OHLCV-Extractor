@@ -63,4 +63,18 @@ Date	open	high	low	close	volume
   
 This extractor provides the necessary foundation for projects rooted in Financial Engineering, Discrete Models of Financial Markets, and Machine Learning for Time-Series, which require high-quality, standardized input data.
 
+# Project Architecture & Code Breakdown
+
+* The core script is designed to be modular and easy to maintain.
+
+```bash
+Function	Purpose
+_ensure_api_keys()	Safely reads Binance API credentials from environment variables.
+_to_millis(dt)	Converts Python datetime objects into Binance-required epoch milliseconds.
+_parse_klines_response(klines)	Transforms the raw list-of-lists API response into a clean, indexed pandas.DataFrame.
+_fetch_klines_requests(...)	Core Robustness Logic. Fetches data using the standard requests library, handling API endpoint parameters and necessary pagination (requesting data in chunks of MAX_LIMIT=1000).
+_fetch_klines_connector(...)	An attempt to use the binance-connector library (if installed), providing a placeholder for potential higher-performance or authenticated retrieval.
+criptodata(...)	Main Extraction Workflow. Manages the date conversion, executes the fetching (with connector/request fallback), and writes the final DataFrame to a CSV file.
+```
+
 ---
