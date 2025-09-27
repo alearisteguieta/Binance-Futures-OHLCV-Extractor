@@ -1,3 +1,5 @@
+# ChatGPT-5 Console Print()
+
 This Print() function represents the original output shown in the console without any modifications to the script. 
 The script was reviewed before execution, and in its original response, ChatGPT-5 does not contain any errors present in the code.
 
