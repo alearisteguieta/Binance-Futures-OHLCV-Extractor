@@ -37,8 +37,6 @@ This repository demonstrates a 4-step process for AI-assisted financial tool dev
 3. **Validation & Testing**: Rigorously test and validate the generated code
 4. **Iteration**: Refine prompts and implementations for production-ready solutions
 
-See `/docs/prompt_framework_[prompt_framework.md]([http://methodology.md](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/blob/main/Financial%20Prompt%20Framework/Prompt%20Framework.md))` for detailed documentation.
-
 ## Features
 
 - Fetch historical OHLCV (Date, Open, High, Low, Close, Volume) from Binance
