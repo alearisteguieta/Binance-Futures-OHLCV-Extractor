@@ -113,7 +113,7 @@ Downloading XRPUSDT ...
   -> XRPUSDT: 1729 rows saved to binance_futures_csvs\XRPUSDT.csv
 Data extraction finished :)
 ```
-* The Output result may change depending on the LLM used.
+* The output result may vary depending on the LLM used. You can also modify the output format directly in the script.
 
 
 # Quantitative Finance and Machine Learning Context
