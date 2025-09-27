@@ -41,11 +41,11 @@ By focusing on prompt structure and iterative refinement, this repository valida
 
 Before running the script, ensure you have the necessary libraries installed.
 
-### Installation
-
-Use the following command to install the primary dependencies:
+## Installation
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
