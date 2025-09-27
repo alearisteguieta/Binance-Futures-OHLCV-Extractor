@@ -6,21 +6,21 @@ At its core, the project is a robust Python utility designed for extracting hist
 
 This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
 
-## 💡 Prompt Engineering & AI Fluency: The Development Framework
+## 💡 Prompt Engineering & AI Fluency: The High-Reliability Framework
 
-This project was developed using a **structured Human-AI collaborative process**, designed to validate expertise in **Prompt Engineering** and the rapid development of functional software components, specifically focusing on **data pipeline automation**.
+This project is a sophisticated **Prompt Engineering case study** focused on designing a **high-reliability data utility** with a structured **Dependency Fallback Architecture**. The code was developed through a Human-AI collaborative process, validating expertise in accelerating the development of robust, production-ready financial *software*.
 
-The core of this methodology relies on a **Hierarchical Prompt Architecture** that systematically breaks down the complex goal (automated data extraction and cleaning) into discrete, manageable sub-tasks.
+### Framework Methodology: Engineering for Robustness and Dependencies
 
-### Framework Methodology: Layered Abstraction for Utility Design
+The prompt architecture was strategically designed to mandate not just the *functionality* but also the *resilience* of the final script.
 
 | Layer | Objective | Key Prompt Strategy | Demonstration in Code Analysis |
 | :--- | :--- | :--- | :--- |
-| **1. Strategic Intent & Core Structure** | Define the overall Python utility, requiring it to be modular (using a function like `criptodata`), handle multiple assets, and utilize the official `python-binance` connector. | **System & Vision Prompt:** Used to establish the complete *flow* of the script: **Fetch $\rightarrow$ Process $\rightarrow$ Save**, ensuring the inclusion of an iteration loop (`for i in list:`). | Focus on establishing the `for` loop and the `criptodata(dataticker)` function signature for scalability. |
-| **2. Data Processing Engineering** | Develop the required data manipulation steps: column selection (`df = df.iloc[:,:6]`), column renaming, *timestamp* conversion, and final type casting (`df = df.astype("float")`). | **Chain-of-Thought (CoT) Prompting:** Requesting the AI to design the optimal **`pandas` pipeline** for cleaning raw `get_historical_klines` output, specifically detailing the conversion of Binance *milliseconds* to standard `datetime`. | Focus on generating the `.set_index("Date")` and `pd.to_datetime(df.index, unit="ms")` lines for accurate time series preparation. |
-| **3. Utility Finalization & Output** | Implement the final saving mechanism and ensure that the process can handle a list of inputs efficiently. | **Refinement Prompt:** Submitting the function to the AI for adding the final output mechanism (`df.to_csv`) and validating that the entire logic is contained within a single, executable script (demonstrating rapid prototyping). | Ensuring the `dataticker + ".csv"` naming convention is implemented for dynamic file saving. |
+| **1. Strategic Intent: Robustness** | Define the complete architecture, prioritizing **maximum data retrieval stability** by mandating a primary method and a **guaranteed *fallback***. | **Constraint-Driven Prompting:** Used to set the **core engineering requirement**: "If the `binance-connector` is unavailable or fails, implement a separate, native `requests`-based function to handle the entire pagination and API call logic." | Focus on the `try/except` block and the `_fetch_klines_connector` / `_fetch_klines_requests` functions in `criptodata`. |
+| **2. Modular Engineering: Time Series Logic** | Develop precise, reusable helper functions for core time-series and data handling logic, independent of the fetching mechanism. | **Abstraction & Helper Prompting:** Mandated the creation of utility functions for common tasks like *timestamp* conversion (`_to_millis`) and complex response parsing (`_parse_klines_response`). | Focus on `_parse_klines_response`, which handles *all* 12 fields of the raw API response and prepares the final `pandas` `DataFrame` with `Date` index. |
+| **3. Reliability Implementation: Pagination & Rate Limits** | Ensure the *fallback* REST API logic correctly handles Binance's pagination and includes rate-limiting safeguards. | **Chain-of-Thought (CoT) Prompting:** Requesting the AI to detail the logic for iterative fetching using `startTime`/`endTime` parameters and calculating the `next_start` value from the last candle's open time. | Focus on the `while True` loop, `limit` checks, and the crucial `next_start = last_open_time + 1` logic within `_fetch_klines_requests`. |
 
-This **AI-Accelerated Development** approach focused on **rapidly translating a data workflow idea into a functional Python *script***, demonstrating the efficiency of a well-defined prompt architecture over manually researching and writing the *boilerplate* code and data cleaning steps.
+This approach demonstrates **AI Fluency** by leveraging the model to generate not just working code, but code that addresses **non-functional requirements** (robustness, dependency management) and best practices (docstrings, type hints, security via environment variables).
 
 1.  **Translate Complex Financial Requirements** into modular, production-ready Python code via structured prompts (AI Fluency).
 2.  **Architect Robust Code:** The tool is engineered for high reliability, featuring an automated fallback to direct REST API calls (using `requests`) if the official Binance connector library is unavailable or fails, ensuring maximum data retrieval stability.
@@ -37,9 +37,26 @@ By focusing on prompt structure and iterative refinement, this repository valida
 - Graceful fallback if `binance-connector` is not installed.
 - Robust pagination and rate-safety.
 
-## Prerequisites
+## Case Studies
 
-Before running the script, ensure you have the necessary libraries installed.
+### 1. Crypto Data Extraction
+
+This case study demonstrates how to build a robust cryptocurrency data extraction tool using the Financial Prompt Framework. The solution extracts OHLCV data from Binance for various crypto assets and exports it to CSV files.
+
+### Example output from AI-assisted development:
+```bash
+def criptodata(symbol: str, start_date_str: str = "2021-01-01", interval: str = "1d"):
+    """Extract historical OHLCV data for a cryptocurrency symbol"""
+    # See full implementation in code_examples/crypto_data_extractor.py
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Basic understanding of Python
+- Knowledge of financial concepts
+- Access to an AI assistant (Claude, GPT, etc.)
 
 ## Installation
 
