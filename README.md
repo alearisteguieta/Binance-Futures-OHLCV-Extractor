@@ -1,124 +1,66 @@
-# AI-Powered FinTech Tools with Prompt Engineering for retail in
+# Binance-Futures-OHLCV-Extractor
 
-## 📜 Overview
+A robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files.
 
-This project is a portfolio that demonstrates the power of **Prompt Engineering** in human-AI collaboration to develop tailored financial tools. The goal is to show how an independent investor or venture capitalist can, with programming knowledge and the assistance of an LLM, create robust solutions for investment analysis, risk management, and more.
+This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
 
-This repository is a case study on **AI Fluency**, applying a **Structured Framework** for code generation and validation with Python tool to download daily OHLCV (Open, High, Low, Close, Volume) historical data from the Binance USDT-M futures market and save it to CSV files. Providing a clean, structured dataset ready for quantitative analysis, backtesting of algorithmic strategies, and training of machine learning models for time series.
+## Key Features
 
----
+* **Robust Data Retrieval:** Prioritizes the `binance-connector` (if available) but reliably falls back to direct `requests` for guaranteed extraction.
+* **Time Series Integrity:** Automatically cleans and formats raw Binance klines data into a standard pandas DataFrame with a UTC-aware datetime index.
+* **Configurable:** Easy modification of target tickers, start date, and timeframe (default is daily, '1d').
+* **Bulk Extraction:** Designed to process a default list of tickers in sequence, minimizing rate-limit risk with small pauses.
 
-## 🚀 Key Features
+## Prerequisites
 
-* **Cryptoasset DATA Extraction**: A script that extracts market data into a .cvs file.
-* **Stock Portfolio Optimization**: A tool for building and supporting market strategies with historical data.
-* **Reusable Prompt Templates**: Creation of prompt templates for code refinement and reuse.
+Before running the script, ensure you have the necessary libraries installed.
 
----
+### Installation
 
-## 🤖 The Human-AI Collaboration Framework
+Use the following command to install the primary dependencies:
 
-The core of this project is an iterative working method. You can learn more about it in our [methodology document](docs/project_methodology.md).
-
-1. **Requirement Definition**: A solution to a clear and practical financial need.
-2. **Prompt Design**: A detailed prompt is designed using one of our [base templates](prompts/templates/).
-3. **AI-Assisted Code Generation**: The LLM generates a draft of the Python code.
-4. **Human Validation and Refinement**: The code is reviewed, debugged, and validated by the developer. This includes writing [unit tests](tests/) to ensure robustness.
-5. **Iteration**: The process is repeated, progressively improving the code and prompts.
-
----
-
-## 🛠️ How to Get Started
-
-```
-"""
-Script: binance_futures_ohlcv_to_csv.py
-Purpose: Download historical daily candlestick (1d) OHLCV data from Binance USDT-M futures
-         for a list of tickers and save one CSV per ticker.
-Libraries: binance-connector (if available) OR fallback to requests,
-           pandas, datetime, os, time
-Usage:   Set environment variables BINANCE_API_KEY and BINANCE_API_SECRET (optional for public endpoints),
-         then run: python binance_futures_ohlcv_to_csv.py
-Output:  CSV files named <TICKER>.csv (e.g. BTCUSDT.csv)
-"""
-```
-
-### Prerequisites
-
-* Python 3.8+
-* An Binance or other futures-broker API key
-* The example is built with ChatGPT5-5
-
-### Instaling
-
-#### Python Libraries
-
-```
-pip install pandas
-```
-
-## 🔑 Configuración (Opcional)
-
-Las claves API de Binance **no son obligatorias** para acceder al endpoint público de *klines* (`/fapi/v1/klines`) utilizado, pero se recomienda configurar las variables de entorno para una futura extensión del script a endpoints privados:
-
-```golpecito
-exportar BINANCE_API_KEY="SU_CLAVE_AQUI"
-exportar BINANCE_API_SECRET="SU_SECRETO_AQUI"
-
-Configure your API keys in a file `.env`.
-```
----
-
-## 📦Installation
-
-1. **Clone the repository:**
-``` pip
-git clone [https://github.com/YourUser/binance-futures-data-downloader.git](https://github.com/YourUser/binance-futures-data-downloader.git)
-cd binance-futures-data-downloader
-```
-2. **Install dependencies:**
-``` pip
+```bash
 pip install -r requirements.txt
 ```
----
 
-## 💡 Use Case Examples
-```
-python binance_futures_ohlcv_to_csv.py
-```
-### Use Case 1: BTC Extracting DATA
+# Environment Variables
 
-1. **The Prompt**: This is the [detailed prompt](prompts/use_cases/uc001_crypto_volatility_analysis.md) used to generate the data extraction code.
-2. **The Generated Code**: The result of the AI-Human collaboration is the [`risk_analyzer.py`](src/financial_tools/risk_analyzer.py) script.
-3. **Execution**:
-```bash
-python -m src.financial_tools.risk_analyzer --asset BTC --period 365
-```
-4. **Results**: The script will generate a .csv file with all the asset's historical data between 2021 and 2025 in real time. You can see an example of the process in [this notebook](notebooks/03_results_visualization.ipynb).
+While the klines (candlestick) endpoint is public and does not require authentication, the script includes logic to detect API keys for future extension (e.g., authenticated endpoints).
 
----
-
-📁 Output
-CSV files will be saved in the binance_futures_csvs/ directory.
-
-binance_futures_csvs/BTCUSDT.csv
-
-binance_futures_csvs/ETHUSDT.csv
-
-...and so on.
-
-📝 Code Reference
-The script uses a dual approach to the API:
-
-It attempts to use the binance-connector library if it's installed.
-
-If it fails or is unavailable, it falls back to direct requests to the URL https://fapi.binance.com/fapi/v1/klines. This design ensures robustness and fault tolerance when fetching data.
-
----
-
-## ✅ Testing
-
-Validation is crucial. All tools have been tested using `pytest`.
+You can optionally set your environment variables for future use:
 
 ```bash
-pytest
+export BINANCE_API_KEY="YOUR_API_KEY"
+export BINANCE_API_SECRET="YOUR_API_SECRET"
+```
+
+# Usage
+
+* Configure Tickers: Open the binance_futures_ohlcv_to_csv.py file and modify the DEFAULT_TICKERS list and START_DATE_STR as needed.
+* Run the Script:
+
+```bash
+  python binance_futures_ohlcv_to_csv.py
+```
+
+# Output
+
+* The script will create a directory named binance_futures_csvs/ in the execution path and save a separate CSV file for each processed ticker (e.g., BTCUSDT.csv, ETHUSDT.csv).
+* Example CSV Output (BTCUSDT.csv):
+
+```bash
+Date	open	high	low	close	volume
+2021-01-01 00:00:00	28935.91	29596.12	28935.91	29331.05	118228.012
+2021-01-02 00:00:00	29330.93	33318.00	29285.00	32185.00	367297.435
+...	...	...	...	...	...
+```
+
+# Quantitative Finance and Machine Learning Context
+
+* **Feature Engineering:** Creating technical indicators (SMA, RSI, MACD).
+* **Time Series Modeling:** Applying models like ARIMA, GARCH, or more complex ML/DL models (LSTMs, Transformers) to predict future price movements.
+* **Backtesting:** Simulating trading strategies over historical market conditions.
+  
+This extractor provides the necessary foundation for projects rooted in Financial Engineering, Discrete Models of Financial Markets, and Machine Learning for Time-Series, which require high-quality, standardized input data.
+
+---
