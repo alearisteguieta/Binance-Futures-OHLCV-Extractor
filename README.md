@@ -1,15 +1,29 @@
-# Binance-Futures-OHLCV-Extractor
+# Binance-Futures-OHLCV-Extractor: An AI-Accelerated Development Showcase
 
-A robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files.
+This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
+
+At its core, the project is a robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files.
 
 This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
 
-## Key Features
+### Showcase of AI Fluency & Prompt Engineering
 
-* **Robust Data Retrieval:** Prioritizes the `binance-connector` (if available) but reliably falls back to direct `requests` for guaranteed extraction.
-* **Time Series Integrity:** Automatically cleans and formats raw Binance klines data into a standard pandas DataFrame with a UTC-aware datetime index.
-* **Configurable:** Easy modification of target tickers, start date, and timeframe (default is daily, '1d').
-* **Bulk Extraction:** Designed to process a default list of tickers in sequence, minimizing rate-limit risk with small pauses.
+This project is not just a data extractor; it is a direct demonstration of how **Prompt Engineering** and **Human-AI collaboration** can accelerate the development lifecycle of specialized FinTech tools. It showcases the ability to:
+
+1.  **Translate Complex Financial Requirements** into modular, production-ready Python code via structured prompts (AI Fluency).
+2.  **Architect Robust Code:** The tool is engineered for high reliability, featuring an automated fallback to direct REST API calls (using `requests`) if the official Binance connector library is unavailable or fails, ensuring maximum data retrieval stability.
+3.  **Establish a Data Foundation** for advanced **Quantitative Finance** and **Machine Learning** projects by enforcing data quality standards (DatetimeIndex, Float types).
+
+By focusing on prompt structure and iterative refinement, this repository validates a crucial workflow for **financial software engineers** operating in the AI-centric era.
+
+## Features
+
+- Fetch historical OHLCV (Date, Open, High, Low, Close, Volume) from Binance
+  USDT-M futures public klines endpoint.
+- Saves per-symbol CSV files (e.g. `BTCUSDT.csv`).
+- Configurable start/end dates, list of tickers, timeframe and output folder.
+- Graceful fallback if `binance-connector` is not installed.
+- Robust pagination and rate-safety.
 
 ## Prerequisites
 
