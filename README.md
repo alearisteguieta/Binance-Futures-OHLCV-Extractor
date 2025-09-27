@@ -28,6 +28,17 @@ This approach demonstrates **AI Fluency** by leveraging the model to generate no
 
 By focusing on prompt structure and iterative refinement, this repository validates a crucial workflow for **financial software engineers** operating in the AI-centric era.
 
+## Prompt Engineering Methodology
+
+This repository demonstrates a 4-step process for AI-assisted financial tool development:
+
+1. **Prompt Design**: Create structured prompts using the Financial Prompt Framework
+2. **Code Generation**: Obtain initial code implementation from AI assistant
+3. **Validation & Testing**: Rigorously test and validate the generated code
+4. **Iteration**: Refine prompts and implementations for production-ready solutions
+
+See `/docs/prompt_framework_[prompt_framework.md]([http://methodology.md](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/blob/main/Financial%20Prompt%20Framework/Prompt%20Framework.md))` for detailed documentation.
+
 ## Features
 
 - Fetch historical OHLCV (Date, Open, High, Low, Close, Volume) from Binance
