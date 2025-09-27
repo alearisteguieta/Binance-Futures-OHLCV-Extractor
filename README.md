@@ -95,16 +95,23 @@ export BINANCE_API_SECRET="YOUR_API_SECRET"
   python binance_futures_ohlcv_to_csv.py
 ```
 
-# Output
+# Output example ChatGPT-5
 
 * The script will create a directory named binance_futures_csvs/ in the execution path and save a separate CSV file for each processed ticker (e.g., BTCUSDT.csv, ETHUSDT.csv).
 * Example CSV Output (BTCUSDT.csv):
 
 ```bash
-Date	open	high	low	close	volume
-2021-01-01 00:00:00	28935.91	29596.12	28935.91	29331.05	118228.012
-2021-01-02 00:00:00	29330.93	33318.00	29285.00	32185.00	367297.435
-...	...	...	...	...	...
+Starting data extraction for tickers: BTCUSDT, ETHUSDT, ADAUSDT, XRPUSDT
+Timeframe: 1d, start date: 2021-01-01, end date: 2025-09-26
+Downloading BTCUSDT ...
+  -> BTCUSDT: 1729 rows saved to binance_futures_csvs\BTCUSDT.csv
+Downloading ETHUSDT ...
+  -> ETHUSDT: 1729 rows saved to binance_futures_csvs\ETHUSDT.csv
+Downloading ADAUSDT ...
+  -> ADAUSDT: 1729 rows saved to binance_futures_csvs\ADAUSDT.csv
+Downloading XRPUSDT ...
+  -> XRPUSDT: 1729 rows saved to binance_futures_csvs\XRPUSDT.csv
+Data extraction finished :)
 ```
 
 # Quantitative Finance and Machine Learning Context
