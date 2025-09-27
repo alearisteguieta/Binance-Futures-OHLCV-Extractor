@@ -1,14 +1,26 @@
 # Binance-Futures-OHLCV-Extractor: An AI-Accelerated Development Showcase
 
-This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
+This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI Collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
 
 At its core, the project is a robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files.
 
 This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
 
-### Showcase of AI Fluency & Prompt Engineering
+## 💡 Prompt Engineering & AI Fluency: The Development Framework
 
-This project is not just a data extractor; it is a direct demonstration of how **Prompt Engineering** and **Human-AI collaboration** can accelerate the development lifecycle of specialized FinTech tools. It showcases the ability to:
+This project was developed using a **structured Human-AI collaborative process**, designed to validate expertise in **Prompt Engineering** and the rapid development of functional software components, specifically focusing on **data pipeline automation**.
+
+The core of this methodology relies on a **Hierarchical Prompt Architecture** that systematically breaks down the complex goal (automated data extraction and cleaning) into discrete, manageable sub-tasks.
+
+### Framework Methodology: Layered Abstraction for Utility Design
+
+| Layer | Objective | Key Prompt Strategy | Demonstration in Code Analysis |
+| :--- | :--- | :--- | :--- |
+| **1. Strategic Intent & Core Structure** | Define the overall Python utility, requiring it to be modular (using a function like `criptodata`), handle multiple assets, and utilize the official `python-binance` connector. | **System & Vision Prompt:** Used to establish the complete *flow* of the script: **Fetch $\rightarrow$ Process $\rightarrow$ Save**, ensuring the inclusion of an iteration loop (`for i in list:`). | Focus on establishing the `for` loop and the `criptodata(dataticker)` function signature for scalability. |
+| **2. Data Processing Engineering** | Develop the required data manipulation steps: column selection (`df = df.iloc[:,:6]`), column renaming, *timestamp* conversion, and final type casting (`df = df.astype("float")`). | **Chain-of-Thought (CoT) Prompting:** Requesting the AI to design the optimal **`pandas` pipeline** for cleaning raw `get_historical_klines` output, specifically detailing the conversion of Binance *milliseconds* to standard `datetime`. | Focus on generating the `.set_index("Date")` and `pd.to_datetime(df.index, unit="ms")` lines for accurate time series preparation. |
+| **3. Utility Finalization & Output** | Implement the final saving mechanism and ensure that the process can handle a list of inputs efficiently. | **Refinement Prompt:** Submitting the function to the AI for adding the final output mechanism (`df.to_csv`) and validating that the entire logic is contained within a single, executable script (demonstrating rapid prototyping). | Ensuring the `dataticker + ".csv"` naming convention is implemented for dynamic file saving. |
+
+This **AI-Accelerated Development** approach focused on **rapidly translating a data workflow idea into a functional Python *script***, demonstrating the efficiency of a well-defined prompt architecture over manually researching and writing the *boilerplate* code and data cleaning steps.
 
 1.  **Translate Complex Financial Requirements** into modular, production-ready Python code via structured prompts (AI Fluency).
 2.  **Architect Robust Code:** The tool is engineered for high reliability, featuring an automated fallback to direct REST API calls (using `requests`) if the official Binance connector library is unavailable or fails, ensuring maximum data retrieval stability.
