@@ -51,3 +51,5 @@ Include a confirmation message at the end, such as "Data extraction finished :)"
 The function logic should be reproducible and generate a correct pandas DataFrame before exporting it to a CSV.
 
 The code should be robust to handle the provided list of assets without errors.
+
+This prompt without any modification has been used to generate the 3 code examples found in: [code_output_example_by_model](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/tree/7fbfdcfba5e3043de850027e0f1d2efe4b84c924/code_output_example_by_model) with the Chat GPT-5, Gemini 2.5 pro and Claude 4 sonnet models.
