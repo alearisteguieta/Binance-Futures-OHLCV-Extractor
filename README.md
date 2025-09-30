@@ -1,4 +1,4 @@
-# Binance-Futures-OHLCV-Extractor: An AI-Accelerated Development Showcase  (Currently under construction)
+# Binance Futures OHLCV Extractor — Human-AI Co‑Development Showcase  (Currently under construction)
 
 This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI Collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
 
@@ -8,7 +8,7 @@ This tool is engineered for high reliability, featuring an automated fallback to
 
 ## 💡 Prompt Engineering & AI Fluency: The High-Reliability Framework
 
-This project is a sophisticated **Prompt Engineering case study** focused on designing a **high-reliability data utility** with a structured **Dependency Fallback Architecture**. The code was developed through a Human-AI collaborative process, validating expertise in accelerating the development of robust, production-ready financial *software*.
+This repository demonstrates Prompt Engineering for robust financial tooling, including dependency-fallback architecture, pagination safety, and data quality guarantees.
 
 ### Framework Methodology: Engineering for Robustness and Dependencies
 
@@ -67,19 +67,37 @@ def criptodata(symbol: str, start_date_str: str = "2021-01-01", interval: str = 
 - Knowledge of financial concepts
 - Access to an AI assistant (Claude, GPT, etc.)
 
-## Installation
+## 1-minute Quickstart
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+- Install
+    - python -m venv .venv && source .venv/bin/activate
+    - pip install -r requirements.txt
+- Run
+    - python -m binance_ohlcv_extractor.cli --symbols BTCUSDT ETHUSDT --start 2021-01-01 --interval 1d --out ./binance_futures_csvs
+- Output
+    - One CSV per symbol with Date index and float OHLCV columns
+
+# CLI usage
+
+- --symbols: one or more tickers
+- --start: YYYY-MM-DD
+- --end: optional, defaults to yesterday
+- --interval: 1m 5m 1h 4h 1d
+- --out: output directory
+- --force-requests: bypass connector and use REST
+
+Rate limits and reliability
+
+- Paginates with MAX_LIMIT=1000 per call
+- Advances next_start = last_open_time + 1 to avoid overlaps
+- Mild sleep between requests to stay below thresholds
 
 # Environment Variables
 
-While the klines (candlestick) endpoint is public and does not require authentication, the script includes logic to detect API keys for future extension (e.g., authenticated endpoints).
+- Public klines endpoint; keys are not required
+- If using keys for future extensions, load from environment or .env and never commit secrets
 
-You can optionally set your environment variables for future use:
+Example:
 
 ```bash
 export BINANCE_API_KEY="YOUR_API_KEY"
