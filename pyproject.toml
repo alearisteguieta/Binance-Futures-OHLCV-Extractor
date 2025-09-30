@@ -1,3 +1,27 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "binance-ohlcv-extractor"
+version = "0.1.0"
+description = "Robust OHLCV extractor for Binance USDT-M futures with connector fallback"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Alejandro Sanchez Aristeguieta" }]
+keywords = ["binance", "ohlcv", "futures", "time-series", "quant"]
+dependencies = [
+  "pandas>=2.2,<3",
+  "requests>=2.32,<3"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5", "mypy>=1.11"]
+dotenv = ["python-dotenv>=1.0,<2"]
+
+[project.scripts]
+binance-ohlcv = "binance_ohlcv_extractor.cli:main"
+
+[tool.ruff]
+line-length = 100
