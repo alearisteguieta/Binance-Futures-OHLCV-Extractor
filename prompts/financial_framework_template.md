@@ -8,6 +8,8 @@ By organizing information into distinct sections covering domain context, functi
 This methodically organized approach enables thorough validation of the AI's decision-making process and allows the generated code to be rigorously tested and evaluated prior to actual implementation in a production environment. 
 The prompt's clarity and comprehensive nature significantly enhance the likelihood of receiving high-quality, production-ready code that meets all specified requirements.
 
+## Prompt
+
 ### 1) Domain Context
 
 **Role:** You are a software developer with experience in FinTech and financial market APIs.
