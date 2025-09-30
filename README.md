@@ -1,4 +1,4 @@
-# Binance-Futures-OHLCV-Extractor: An AI-Accelerated Development Showcase
+# Binance-Futures-OHLCV-Extractor: An AI-Accelerated Development Showcase  (Currently under construction)
 
 This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI Collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
 
