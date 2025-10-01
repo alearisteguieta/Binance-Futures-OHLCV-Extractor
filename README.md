@@ -190,6 +190,7 @@ Project Structure
 # Architecture: Dependency‑Fallback Flow
  - The extractor prioritizes reliability by attempting a connector path and gracefully falling back to a native REST path with robust pagination.
 
+```
 +----------------------------+
 |   Start Extraction (CLI)   |
 +-------------+--------------+
@@ -228,5 +229,6 @@ Project Structure
                         |
                         v
                 "Data extraction finished :)"
+```
 
 ---
