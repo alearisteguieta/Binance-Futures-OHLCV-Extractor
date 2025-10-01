@@ -1,5 +1,3 @@
-# Data Extraction
-
 # Financial Prompt Framework — Improved Template
 
 > Metadata
