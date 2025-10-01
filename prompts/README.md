@@ -1,4 +1,4 @@
-# prompts folder — Quick Guide
+# Prompts folder — Quick Guide
 
 Purpose:
 - Contain templates, model-specific variants, and documentation to reproduce and compare prompt outputs.
