@@ -1,4 +1,8 @@
-# Prompts folder — Quick Guide
+## Financial Prompt Framework:
+
+This comprehensive prompt methodically deconstructs the problem space and articulates the solution requirements in a clear, accessible format for the LLM to generate complete Python code without unnecessary limitations or ambiguities. The carefully structured framework provides the AI with precise instructions regarding the financial domain context, specific programming requirements, and detailed code generation expectations. By organizing information into distinct sections covering domain context, functional requirements, technical specifications, and explicit instructions, the prompt creates a robust foundation for the AI to work from. This methodically organized approach enables thorough validation of the AI's decision-making process and allows the generated code to be rigorously tested and evaluated prior to actual implementation in a production environment. The prompt's clarity and comprehensive nature significantly enhance the likelihood of receiving high-quality, production-ready code that meets all specified requirements.
+
+##  Prompts folder — Quick Guide
 
 Purpose:
 - Contain templates, model-specific variants, and documentation to reproduce and compare prompt outputs.
