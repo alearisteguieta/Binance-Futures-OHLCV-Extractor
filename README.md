@@ -156,4 +156,35 @@ This extractor provides the necessary foundation for projects rooted in Financia
 | criptodata(...)	| Main Extraction Workflow. Manages the date conversion, executes the fetching (with connector/request fallback), and writes the final DataFrame to a CSV file.
 ```
 
+# Human–AI Collaboration
+
+- Prompt architecture, layered requirements, and model comparisons are documented in docs/
+    - docs/PROMPT_[ARCHITECTURE.md](http://ARCHITECTURE.md)
+    - docs/FINANCIAL_PROMPT_[FRAMEWORK.md](http://FRAMEWORK.md)
+    - testing_validation_by_model/
+- This repo is a case study in “AI Fluency”: prompts specify non‑functional requirements like resilience, data validity, and dependency fallback[[1]](https://raw.githubusercontent.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/main/README.md)
+
+Python API
+
+The extractor exposes a simple function:
+
+```python
+from binance_ohlcv_extractor.extractor import criptodata
+
+df = criptodata(
+    symbol="BTCUSDT",
+    start_date_str="2021-01-01",
+    end_date=None,         # defaults to yesterday
+    interval="1d",
+    output_dir="./binance_futures_csvs"
+)
+```
+
+Project Structure
+
+- src/binance_ohlcv_extractor/[extractor.py](http://extractor.py) — core logic
+- src/binance_ohlcv_extractor/[cli.py](http://cli.py) — CLI entrypoint
+- tests/ — unit tests for parser and pagination behavior
+- docs/ — methodology and prompt artifacts
+
 ---
