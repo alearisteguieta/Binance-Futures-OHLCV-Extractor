@@ -8,3 +8,9 @@ All notable changes to this project will be documented here.
 - Logging, argparse, CSV output
 - Basic unit test for klines parser
 - New code versions
+
+## [Unreleased]
+- Package layout under src/
+- CLI entry point and argparse
+- Unit tests for parser and pagination
+- GitHub Actions: lint + test matrix
