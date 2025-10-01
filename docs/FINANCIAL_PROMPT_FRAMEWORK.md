@@ -1,55 +1,48 @@
 ## Data Extraction Request
 
-### Financial Prompt Framework:
+### Objective
 
-This comprehensive prompt methodically deconstructs the problem space and articulates the solution requirements in a clear, accessible format for the LLM to generate complete Python code without unnecessary limitations or ambiguities. The carefully structured framework provides the AI with precise instructions regarding the financial domain context, specific programming requirements, and detailed code generation expectations. By organizing information into distinct sections covering domain context, functional requirements, technical specifications, and explicit instructions, the prompt creates a robust foundation for the AI to work from. This methodically organized approach enables thorough validation of the AI's decision-making process and allows the generated code to be rigorously tested and evaluated prior to actual implementation in a production environment. The prompt's clarity and comprehensive nature significantly enhance the likelihood of receiving high-quality, production-ready code that meets all specified requirements.
+Specify an AI‑driven, production‑minded data extractor for Binance USDT‑M futures OHLCV that guarantees a reliable CSV foundation for quant research.
 
-# 1) Domain Context
+Domain Context
 
-**Role:** You are a software developer with experience in FinTech and financial market APIs.
+- Role: Software developer with FinTech and exchange API experience
+- Output: Date‑indexed OHLCV tables with float types
+Model outputs and test notes are captured under testing_validation_by_model
 
-**Objective:** Create a Python script to extract historical market data (candlestick data) from the Binance API and export them to a CSV file.
+### Functional Requirements
 
-## 2) Functional Requirements
+- Data source: Binance Futures public klines
+- Assets: One or more symbols, e.g., BTCUSDT ETHUSDT ADAUSDT XRPUSDT
+- Fields: Date, Open, High, Low, Close, Volume
+- Window: From YYYY‑MM‑DD to yesterday
+- Timeframes: 1m 5m 15m 1h 4h 1d
 
-**Data Sources:** The Binance API for USDT futures.
+### Technical Requirements
 
-**Assets:** The function should be capable of processing a list of assets, specifically BTCUSDT, ETHUSDT, ADAUSDT, and XRPUSDT.
+- Language: Python 3.9+
+- Libraries: pandas, requests
+- Security: No hardcoded secrets. Keys are optional for future extensions via environment variables
+- Output: One CSV per symbol with Date as index and float OHLCV columns
+- Code structure:
+    - Core function: criptodata(symbol, start_date_str, end_date=None, interval="1d", output_dir=".")
+    - REST pagination with MAX_LIMIT=1000 and next_start increment
+    - Deterministic type casting and window filtering
 
-**Data to Extract:** Date, Open, High, Low, Close, Volume.
+### Validation Criteria
 
-**Date Range:** From January 1, 2021 until the day before the script execution.
+- Determinism: repeated runs over the same window produce identical rows (unless upstream data changes)
+- Types: OHLCV numeric columns are floats, Date is a DatetimeIndex
+- Integrity: no duplicate or overlapping timestamps; window is respected
+- Robustness: transient network failures handled by short backoff; connector failure never blocks REST path
 
-**Timeframe:** Daily (1d).
+### Non‑Functional Requirements (NFRs)
 
-**Data Processing:** Convert the timestamp from the Date column to a readable date format and set it as the DataFrame index.
+- Reliability: connector→REST fallback, minimal sleeps to respect rate limits
+- Portability: works without binance‑connector installed
+- Observability: concise console progress, actionable error messages
 
-## 3) Technical Requirements
+### Human–AI Collaboration Evidence
 
-**Language:** Python.
-
-**Libraries:** binance-connector, pandas, datetime.
-
-**API Keys Handling:** The script must handle API keys securely.
-
-**Output Format:** A separate CSV file for each asset, named with the asset's ticker (e.g., BTCUSDT.csv).
-
-**Code Structure:** The code should be modular, with a main function (criptodata) that can be called within a loop to process multiple assets.
-
-## 4) Specific Instructions to the Assistant (Prompt)
-
-Write only the Python code in a single code block.
-
-Include clear comments to explain each step, such as data conversion and DataFrame handling.
-
-Ensure the script can be executed directly from the console.
-
-Include a confirmation message at the end, such as "Data extraction finished :)".
-
-## 5) Validation
-
-The function logic should be reproducible and generate a correct pandas DataFrame before exporting it to a CSV.
-
-The code should be robust to handle the provided list of assets without errors.
-
-This prompt without any modification has been used to generate the 3 code examples found in: [code_output_example_by_model](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/tree/7fbfdcfba5e3043de850027e0f1d2efe4b84c924/code_output_example_by_model) with the Chat GPT-5, Gemini 2.5 pro and Claude 4 sonnet models.
+- The initial prompt and iterative refinements informed both the pagination logic and the fallback strategy.[[1]](https://raw.githubusercontent.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/main/README.md)
+- Model outputs and test notes are captured under testing_validation_by_model
