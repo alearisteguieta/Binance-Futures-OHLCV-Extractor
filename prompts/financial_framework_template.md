@@ -1,61 +1,84 @@
 # Data Extraction
 
-## Financial Prompt Framework:
+# Financial Prompt Framework — Improved Template
 
-This comprehensive prompt methodically deconstructs the problem space and articulates the solution requirements in a clear, accessible format for the LLM to generate complete Python code without unnecessary limitations or ambiguities. 
-The carefully structured framework provides the AI with precise instructions regarding the financial domain context, specific programming requirements, and detailed code generation expectations. 
-By organizing information into distinct sections covering domain context, functional requirements, technical specifications, and explicit instructions, the prompt creates a robust foundation for the AI to work from. 
-This methodically organized approach enables thorough validation of the AI's decision-making process and allows the generated code to be rigorously tested and evaluated prior to actual implementation in a production environment. 
-The prompt's clarity and comprehensive nature significantly enhance the likelihood of receiving high-quality, production-ready code that meets all specified requirements.
+> Metadata
+- name: Financial OHLCV Extractor Template
+- owner: alearisteguieta
+- version: 2025-10-01
+- purpose: Prompt to generate Python scripts that extract historical OHLCV from the Binance USDT Futures API and export them to CSV.
 
-## Prompt
+1) Objective
+You are a developer experienced in FinTech and market APIs. Produce a complete, tested, and ready-to-run Python script that:
+- Extracts historical candlestick (OHLCV) data from the Binance USDT Futures API,
+- For a list of assets,
+- With a daily timeframe (1d),
+- From 2021-01-01 up to the day before execution,
+- And exports one CSV per asset with columns: Date, Open, High, Low, Close, Volume (Date in a readable format and set as the DataFrame index).
 
-### 1) Domain Context
+2) Expected inputs
+- assets: list of tickers (e.g., ["BTCUSDT","ETHUSDT","ADAUSDT","XRPUSDT"])
+- start_date: "2021-01-01"
+- end_date: day before execution (calculate dynamically)
+- timeframe: "1d"
 
-**Role:** You are a software developer with experience in FinTech and financial market APIs.
+3) Functional requirements (precise)
+- Correct handling of pagination / API limits for long historical ranges.
+- Convert timestamps to UTC timezone and ISO YYYY-MM-DD format.
+- One CSV per asset named exactly: <ASSET>.csv
+- Modular code with an exportable main function: def extract_ohlcv(asset, start_date, end_date, timeframe, client, out_dir) -> pandas.DataFrame
+- Basic logging and exponential backoff retries for network errors and rate limits.
+- Validate DataFrame schema before exporting.
+- Secure handling of API keys via environment variables (e.g., BINANCE_API_KEY, BINANCE_API_SECRET). Do not print secrets.
 
-**Objective:** Create a Python script to extract historical market data (candlestick data) from the Binance API and export them to a CSV file.
+4) Technical requirements
+- Language: Python 3.10+
+- Libraries: binance-connector (or python-binance if preferred), pandas, python-dotenv (optional), requests, tenacity (or custom retry implementation)
+- Tests: at minimum a sanity test validating output format (see prompts/evaluation_rubric.md)
 
-### 2) Functional Requirements
+5) Expected output
+- A Python script executable from the console
+- Clear console messages: start, progress per asset, final: "Data extraction finished :)"
+- Proper error handling and exit codes.
 
-**Data Sources:** The Binance API for USDT futures.
+6) Restrictions / DOs & DON'Ts
+- DO: Create small, reusable functions.
+- DO: Comment complex sections (pagination, rate limit handling).
+- DO: Respect token/response limits when instructing models to return only code.
+- DON'T: Hardcode credentials.
+- DON'T: Use unmentioned libraries without justification.
 
-**Assets:** The function should be capable of processing a list of assets, specifically BTCUSDT, ETHUSDT, ADAUSDT, and XRPUSDT.
+7) Example I/O (expected)
+Input (parameters):
+- assets = ["BTCUSDT","ETHUSDT"]
+- start_date = "2021-01-01"
+- timeframe = "1d"
 
-**Data to Extract:** Date, Open, High, Low, Close, Volume.
+Expected CSV: BTCUSDT.csv
+Date,Open,High,Low,Close,Volume
+2021-01-01,29374.15,29600.00,29000.00,29300.00,1234.56
+...
 
-**Date Range:** From January 1, 2021 until the day before the script execution.
+8) Validation (Checklist)
+- [ ] Date as DatetimeIndex in UTC.
+- [ ] Columns present and types correct.
+- [ ] CSV files written correctly.
+- [ ] Retries implemented for 429/5xx responses.
+- [ ] Code executable from console with final output message.
 
-**Timeframe:** Daily (1d).
-
-**Data Processing:** Convert the timestamp from the Date column to a readable date format and set it as the DataFrame index.
-
-### 3) Technical Requirements
-
-**Language:** Python.
-
-**Libraries:** binance-connector, pandas, datetime.
-
-**API Keys Handling:** The script must handle API keys securely.
-
-**Output Format:** A separate CSV file for each asset, named with the asset's ticker (e.g., BTCUSDT.csv).
-
-**Code Structure:** The code should be modular, with a main function (criptodata) that can be called within a loop to process multiple assets.
-
-### 4) Specific Instructions to the Assistant (Prompt)
-
-Write only the Python code in a single code block.
-
-Include clear comments to explain each step, such as data conversion and DataFrame handling.
-
-Ensure the script can be executed directly from the console.
-
-Include a confirmation message at the end, such as "Data extraction finished :)".
-
-### 5) Validation
-
-The function logic should be reproducible and generate a correct pandas DataFrame before exporting it to a CSV.
-
-The code should be robust to handle the provided list of assets without errors.
+9) Evaluation rubric (summary)
+See prompts/evaluation_rubric.md for detailed scoring:
+- DataFrame correctness (0-40)
+- Robustness (retries, rate limits) (0-20)
+- Security (no secrets) (0-10)
+- Code quality (modularity, comments) (0-20)
+- Console UX and messages (0-10)
 
 This prompt without any modification has been used to generate the 3 code examples found in: [code_output_example_by_model](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/tree/7fbfdcfba5e3043de850027e0f1d2efe4b84c924/code_output_example_by_model) with the Chat GPT-5, Gemini 2.5 pro and Claude 4 sonnet models.
+
+## Generation prompt (example to send to an LLM)
+
+System: You are an assistant expert in Python development and financial APIs. Respond by generating ONLY the requested Python file.
+User: Implement a Python script that meets all requirements in this template. Use the official Binance USDT Futures interface, correct pagination, retries, and export one CSV per asset. Define extract_ohlcv(...) and a main() that processes a list of assets. Do not include keys in the code; use environment variables.
+
+
