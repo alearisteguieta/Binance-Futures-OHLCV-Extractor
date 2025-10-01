@@ -187,4 +187,46 @@ Project Structure
 - tests/ — unit tests for parser and pagination behavior
 - docs/ — methodology and prompt artifacts
 
+# Architecture: Dependency‑Fallback Flow
+ - The extractor prioritizes reliability by attempting a connector path and gracefully falling back to a native REST path with robust pagination.
+
++----------------------------+
+|   Start Extraction (CLI)   |
++-------------+--------------+
+              |
+              v
+     +--------+---------+
+     |  Try binance-    |
+     |  connector path  |
+     |  (if installed)  |
+     +--------+---------+
+              | success?
+        +-----+-----+
+        |           |
+       Yes         No / Error
+        |           |
+        v           v
++-------+--+   +----+-------------------+
+| Fetch via |   |  Fallback to REST     |
+| connector |   |  (requests + pagination)|
++-------+--+   +----+-------------------+
+        |               |
+        v               v
++-------+---------------+--------------------------+
+| Parse klines -> DataFrame (Date index, floats)  |
++-----------------------+-------------------------+
+                        |
+                        v
+         +--------------+---------------+
+         |  Filter to requested window  |
+         +--------------+---------------+
+                        |
+                        v
+         +--------------+---------------+
+         |  Write CSV per symbol        |
+         +--------------+---------------+
+                        |
+                        v
+                "Data extraction finished :)"
+
 ---
