@@ -1,10 +1,16 @@
 # Binance Futures OHLCV Extractor — Human-AI Co‑Development Showcase  (Currently under construction)
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)]()
+[![Python](https://img.shields.io/badge/python-3.10%2B-yellow.svg)]()
+[![Tests](https://img.shields.io/badge/tests-pytests-green.svg)]()
+
 This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI Collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
 
 At its core, the project is a robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files. This codebase has the possibility of being optimized and adapted to new requirements using AI assistance if desired.
 
 This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
+
+- Status: Work in progress — Case study and reproducible prompt engineering workflow.
 
 ## 💡 Prompt Engineering & AI Fluency: The High-Reliability Framework
 
@@ -28,166 +34,63 @@ This approach demonstrates **AI Fluency** by leveraging the model to generate no
 
 By focusing on prompt structure and iterative refinement, this repository validates a crucial workflow for **financial software engineers** operating in the AI-centric era.
 
-## Prompt Engineering Methodology
+---
 
-This repository demonstrates a 4-step process for AI-assisted financial tool development:
+### Overview
+This repository demonstrates how prompt engineering accelerates the development of robust financial tooling.
+It documents prompt design, model iterations, generated code examples, and a small test-suite validating parsing behavior.
+The extractor focuses on Binance USDT‑M futures public klines and provides a portable, well-documented foundation for quant research.
 
-1. **Prompt Design**: Create structured prompts using the Financial Prompt Framework
-2. **Code Generation**: Obtain initial code implementation from AI assistant
-3. **Validation & Testing**: Rigorously test and validate the generated code
-4. **Iteration**: Refine prompts and implementations for production-ready solutions
+### Quick links
+- Core library: src/binance_ohlcv_extractor/
+- CLI: python -m binance_ohlcv_extractor.cli
+- Prompts: prompts/
+- Iterations & validation: testing_validation_by_model/
+- Docs: docs/
 
-## Features
+### Quickstart (1-minute)
+1. Create and activate a virtual environment:
+   - python -m venv .venv && source .venv/bin/activate  (Unix)
+   - python -m venv .venv && .venv\Scripts\activate     (Windows)
+2. Install:
+   - pip install -r requirements.txt
+3. Run:
+   - python -m binance_ohlcv_extractor.cli --symbols BTCUSDT ETHUSDT --start 2021-01-01 --interval 1d --out ./binance_futures_csvs
 
-- Fetch historical OHLCV (Date, Open, High, Low, Close, Volume) from Binance
-  USDT-M futures public klines endpoint.
-- Saves per-symbol CSV files (e.g. `BTCUSDT.csv`).
-- Configurable start/end dates, list of tickers, timeframe and output folder.
-- Graceful fallback if `binance-connector` is not installed.
-- Robust pagination and rate-safety.
+### What this project contains
+- A prompt-driven process that produced multiple code examples (ChatGPT-5, Claude, Gemini).
+- A small, tested core module that parses Binance klines and exports CSVs.
+- Documentation on prompt architecture, evaluation rubrics, and iteration logs.
 
-## Case Studies
+Repository conventions
+- Language: English for all user-facing documentation and printed messages.
+- Provenance: every generated code file should include a short header with model, prompt_id, generation timestamp and run parameters.
+- Golden outputs: store model outputs and metadata under testing_validation_by_model/golden_outputs/<model>/<timestamp>/
 
-### 1. Crypto Data Extraction
+### Contributing
+Contributions are welcome. Please follow these steps:
+1. Fork the repository.
+2. Create a topic branch for your change.
+3. Add tests for any behavioral change.
+4. Open a PR and reference the relevant prompt_id when contributing improvements to prompts/code generation.
 
-This case study demonstrates how to build a robust cryptocurrency data extraction tool using the Financial Prompt Framework. The solution extracts OHLCV data from Binance for various crypto assets and exports it to CSV files.
+### Security
+- Public klines endpoint does not require API keys.
+- If you use API keys for authenticated endpoints, load them from environment variables or a local .env file and never commit secrets.
+- If you find secrets in the repository, report them following SECURITY.md (create if missing) or open an issue.
 
-### Example output from AI-assisted development:
-```bash
-def criptodata(symbol: str, start_date_str: str = "2021-01-01", interval: str = "1d"):
-    """Extract historical OHLCV data for a cryptocurrency symbol"""
-    # See full implementation in code_examples/crypto_data_extractor.py
-```
+### License
+This project is distributed under the MIT license. See LICENSE for details.
 
-## Getting Started
+### Acknowledgements
+- Demonstrates human-in-the-loop prompt engineering and evaluation for robust financial tooling.
+- Examples generated using multiple LLMs; see testing_validation_by_model/ for iteration histories.
 
-### Prerequisites
+### Contact / Maintainer
+- Repository owner: alearisteguieta
+- For major changes or security issues please open an issue or PR.
 
-- Basic understanding of Python
-- Knowledge of financial concepts
-- Access to an AI assistant (Claude, GPT, etc.)
-
-## 1-minute Quickstart
-
-- Install
-    - python -m venv .venv && source .venv/bin/activate
-    - pip install -r requirements.txt
-- Run
-    - python -m binance_ohlcv_extractor.cli --symbols BTCUSDT ETHUSDT --start 2021-01-01 --interval 1d --out ./binance_futures_csvs
-- Output
-    - One CSV per symbol with Date index and float OHLCV columns
-
-# CLI usage
-
-- --symbols: one or more tickers
-- --start: YYYY-MM-DD
-- --end: optional, defaults to yesterday
-- --interval: 1m 5m 1h 4h 1d
-- --out: output directory
-- --force-requests: bypass connector and use REST
-
-Rate limits and reliability
-
-- Paginates with MAX_LIMIT=1000 per call
-- Advances next_start = last_open_time + 1 to avoid overlaps
-- Mild sleep between requests to stay below thresholds
-
-# Environment Variables
-
-- Public klines endpoint; keys are not required
-- If using keys for future extensions, load from environment or .env and never commit secrets
-
-Example:
-
-```bash
-export BINANCE_API_KEY="YOUR_API_KEY"
-export BINANCE_API_SECRET="YOUR_API_SECRET"
-```
-
-# Usage
-
-* Configure Tickers: Open the binance_futures_ohlcv_to_csv.py file and modify the DEFAULT_TICKERS list and START_DATE_STR as needed.
-* Run the Script:
-
-```bash
-  python binance_futures_ohlcv_to_csv.py
-```
-
-# Output example ChatGPT-5
-
-* The script will create a directory named binance_futures_csvs/ in the execution path and save a separate CSV file for each processed ticker (e.g., BTCUSDT.csv, ETHUSDT.csv).
-* Example CSV Output (BTCUSDT.csv):
-
-```bash
-Starting data extraction for tickers: BTCUSDT, ETHUSDT, ADAUSDT, XRPUSDT
-Timeframe: 1d, start date: 2021-01-01, end date: 2025-09-26
-Downloading BTCUSDT ...
-  -> BTCUSDT: 1729 rows saved to binance_futures_csvs\BTCUSDT.csv
-Downloading ETHUSDT ...
-  -> ETHUSDT: 1729 rows saved to binance_futures_csvs\ETHUSDT.csv
-Downloading ADAUSDT ...
-  -> ADAUSDT: 1729 rows saved to binance_futures_csvs\ADAUSDT.csv
-Downloading XRPUSDT ...
-  -> XRPUSDT: 1729 rows saved to binance_futures_csvs\XRPUSDT.csv
-Data extraction finished :)
-```
-* The output result may vary depending on the LLM used. You can also modify the output format directly in the script.
-
-
-# Quantitative Finance and Machine Learning Context
-
-* **Feature Engineering:** Creating technical indicators (SMA, RSI, MACD).
-* **Time Series Modeling:** Applying models like ARIMA, GARCH, or more complex ML/DL models (LSTMs, Transformers) to predict future price movements.
-* **Backtesting:** Simulating trading strategies over historical market conditions.
-  
-This extractor provides the necessary foundation for projects rooted in Financial Engineering, Discrete Models of Financial Markets, and Machine Learning for Time-Series, which require high-quality, standardized input data.
-
-# Project Architecture & Code Breakdown
-
-* The core script is designed to be modular and easy to maintain.
-
-```bash
-| Function	| Purpose
-| _ensure_api_keys()	| Safely reads Binance API credentials from environment variables.
-| _to_millis(dt)	| Converts Python datetime objects into Binance-required epoch milliseconds.
-| _parse_klines_response(klines)	| Transforms the raw list-of-lists API response into a clean, indexed pandas.DataFrame.
-| _fetch_klines_requests(...)	| Core Robustness Logic. Fetches data using the standard requests library, handling API endpoint parameters and necessary pagination (requesting data in chunks of MAX_LIMIT=1000).
-| _fetch_klines_connector(...)	| An attempt to use the binance-connector library (if installed), providing a placeholder for potential higher-performance or authenticated retrieval.
-| criptodata(...)	| Main Extraction Workflow. Manages the date conversion, executes the fetching (with connector/request fallback), and writes the final DataFrame to a CSV file.
-```
-
-# Human–AI Collaboration
-
-- Prompt architecture, layered requirements, and model comparisons are documented in docs/
-    - docs/PROMPT_[ARCHITECTURE.md](http://ARCHITECTURE.md)
-    - docs/FINANCIAL_PROMPT_[FRAMEWORK.md](http://FRAMEWORK.md)
-    - testing_validation_by_model/
-- This repo is a case study in “AI Fluency”: prompts specify non‑functional requirements like resilience, data validity, and dependency fallback[[1]](https://raw.githubusercontent.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/main/README.md)
-
-Python API
-
-The extractor exposes a simple function:
-
-```python
-from binance_ohlcv_extractor.extractor import criptodata
-
-df = criptodata(
-    symbol="BTCUSDT",
-    start_date_str="2021-01-01",
-    end_date=None,         # defaults to yesterday
-    interval="1d",
-    output_dir="./binance_futures_csvs"
-)
-```
-
-Project Structure
-
-- src/binance_ohlcv_extractor/[extractor.py](http://extractor.py) — core logic
-- src/binance_ohlcv_extractor/[cli.py](http://cli.py) — CLI entrypoint
-- tests/ — unit tests for parser and pagination behavior
-- docs/ — methodology and prompt artifacts
-
-# Architecture: Dependency‑Fallback Flow
+### Architecture: Dependency‑Fallback Flow
  - The extractor prioritizes reliability by attempting a connector path and gracefully falling back to a native REST path with robust pagination.
 
 ```
