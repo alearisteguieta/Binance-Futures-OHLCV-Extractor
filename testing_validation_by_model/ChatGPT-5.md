@@ -1,4 +1,4 @@
-# ChatGPT-5 Console Print()
+# ChatGPT-5 Console Print() Example
 
 This Print() function represents the original output shown in the console without any modifications to the script. 
 The script was reviewed before execution, and in its original response, ChatGPT-5 does not contain any errors present in the code.
@@ -19,5 +19,11 @@ Data extraction finished :)
 
 This Print() is subject to modification based on user requirements, asset count, etc.
 
-## .cvs file example:
+## .cvs file example:[BTCUSDT.csv](https://github.com/user-attachments/files/22660838/BTCUSDT.csv)
+
+### Date,Open,High,Low,Close,Volume
+
+- 2023-09-27 00:00:00+00:00,26221.68,26850.0,26112.06,26372.99,34771.57978
+
+
 
