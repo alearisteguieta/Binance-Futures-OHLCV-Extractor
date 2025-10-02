@@ -1,6 +1,3 @@
-# Gemini variant prompt:
-
-```markdown
 # Variant Prompt: Gemini
 
 **Metadata**  
