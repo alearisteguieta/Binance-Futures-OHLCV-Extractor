@@ -72,5 +72,3 @@ Date,Open,High,Low,Close,Volume
 9) Generation instructions (example to send to an LLM)
 System: You are an assistant expert in Python and financial APIs. Generate ONLY the requested Python file and nothing else.
 User: Implement a Python script that meets all requirements above. Include module-level provenance metadata (prompt_id, prompt_version). Use requests for REST klines fetching and provide a connector fallback only as optional. Make sure the CSVs follow the exact schema.
-
-This prompt without any modification has been used to generate the 3 code examples found in: [code_output_example_by_model](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/tree/7fbfdcfba5e3043de850027e0f1d2efe4b84c924/code_output_example_by_model) with the Chat GPT-5, Gemini 2.5 pro and Claude 4 sonnet models.
