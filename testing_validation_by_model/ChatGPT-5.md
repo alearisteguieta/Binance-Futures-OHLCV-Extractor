@@ -23,7 +23,8 @@ This Print() is subject to modification based on user requirements, asset count,
 
 ### Date,Open,High,Low,Close,Volume
 
+```bash
 - 2023-09-27 00:00:00+00:00,26221.68,26850.0,26112.06,26372.99,34771.57978
-
+```
 
 
