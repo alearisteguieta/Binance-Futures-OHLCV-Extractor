@@ -1,6 +1,3 @@
-# Variant prompt: Claude
-
-```markdown
 # Variant Prompt: Claude
 
 **Metadata**  
@@ -56,7 +53,7 @@ You are a developer experienced in FinTech. Return ONLY executable Python code.
 ```
 
 **User:**  
-```
+
 Include all template requirements. Claude often benefits from explicit step instructions:
 1) declare imports
 2) define utility functions
@@ -65,7 +62,7 @@ Include all template requirements. Claude often benefits from explicit step inst
 Implement error handling and retries.
 Use environment variables for API keys.
 Ensure CSV columns are Date, Open, High, Low, Close, Volume and that Date is a DatetimeIndex in UTC.
-```
+
 
 ---
 
@@ -74,4 +71,4 @@ Ensure CSV columns are Date, Open, High, Low, Close, Volume and that Date is a D
 - Explicit **system + user message pair** is documented for reproducibility.  
 - Metadata and provenance are included for version tracking.  
 - File naming conventions are standardized for generated scripts and CSV outputs.  
-```
+
