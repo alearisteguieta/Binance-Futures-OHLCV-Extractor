@@ -1,4 +1,4 @@
-# # Prompt-driven architecture and dependency-fallback design
+# Prompt-driven architecture and dependency-fallback design
 
 ### Scope
 This document explains how prompt requirements shaped the code structure, why reliability is a first‑class concern, and how the connector → REST fallback guarantees successful extraction in imperfect environments.  
