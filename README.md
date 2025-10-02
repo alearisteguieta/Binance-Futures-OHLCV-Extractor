@@ -1,10 +1,11 @@
-# Binance Futures OHLCV Extractor — Human-AI Co‑Development Showcase  (Currently under construction)
+# Binance Futures OHLCV Extractor — Human‑AI Prompt Engineering Case Study
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)]()
 [![Python](https://img.shields.io/badge/python-3.10%2B-yellow.svg)]()
 [![Tests](https://img.shields.io/badge/tests-pytests-green.svg)]()
+[![Docs](https://img.shields.io/badge/docs-guides-lightgrey.svg)]()
 
-This repository serves as a practical case study in Prompt Engineering and AI Fluency, demonstrating the power of Human-AI Collaboration for the accelerated development of robust financial tools. It embodies a structured approach to Prompt Framework Architecture Design—a core focus of this portfolio—for creating high-utility software tailored for individual and large-scale investors.
+Status: Educational guide / case study (not intended as an executable tool)
 
 At its core, the project is a robust Python utility designed for extracting historical Open, High, Low, Close, and Volume (OHLCV) candlestick data from the Binance USDT-M Futures API and saving it to clean, ready-to-use CSV files. This codebase has the possibility of being optimized and adapted to new requirements using AI assistance if desired.
 
