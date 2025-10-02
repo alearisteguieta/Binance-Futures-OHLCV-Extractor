@@ -1,82 +1,76 @@
 # Financial Prompt Framework — Improved Template
 
-> Metadata
+Metadata
 - name: Financial OHLCV Extractor Template
 - owner: alearisteguieta
-- version: 2025-10-01
-- purpose: Prompt to generate Python scripts that extract historical OHLCV from the Binance USDT Futures API and export them to CSV.
+- prompt_id: ffw-2025-10-02-v1
+- version: 2025-10-02
+- purpose: Generate Python scripts that extract historical OHLCV from the Binance USDT Futures API and export them to CSV.
 
 1) Objective
 You are a developer experienced in FinTech and market APIs. Produce a complete, tested, and ready-to-run Python script that:
-- Extracts historical candlestick (OHLCV) data from the Binance USDT Futures API,
-- For a list of assets,
-- With a daily timeframe (1d),
-- From 2021-01-01 up to the day before execution,
-- And exports one CSV per asset with columns: Date, Open, High, Low, Close, Volume (Date in a readable format and set as the DataFrame index).
+- Extracts historical candlestick (OHLCV) data from the Binance USDT Futures API;
+- Accepts a list of assets;
+- Uses a daily timeframe by default (1d), but supports other intervals (1m,5m,15m,1h,4h);
+- Extracts data from 2021-01-01 up to the day before execution (end date computed dynamically);
+- Exports one CSV per asset with exact columns: Date, Open, High, Low, Close, Volume.
+- Ensures Date is ISO 8601 (UTC) in the CSV and stored as DatetimeIndex in the returned pandas DataFrame.
 
 2) Expected inputs
-- assets: list of tickers (e.g., ["BTCUSDT","ETHUSDT","ADAUSDT","XRPUSDT"])
+- assets: list[str] (example: ["BTCUSDT","ETHUSDT","ADAUSDT","XRPUSDT"])
 - start_date: "2021-01-01"
-- end_date: day before execution (calculate dynamically)
-- timeframe: "1d"
+- end_date: computed as yesterday if not provided
+- timeframe: "1d" (default)
 
 3) Functional requirements (precise)
-- Correct handling of pagination / API limits for long historical ranges.
-- Convert timestamps to UTC timezone and ISO YYYY-MM-DD format.
-- One CSV per asset named exactly: <ASSET>.csv
-- Modular code with an exportable main function: def extract_ohlcv(asset, start_date, end_date, timeframe, client, out_dir) -> pandas.DataFrame
-- Basic logging and exponential backoff retries for network errors and rate limits.
-- Validate DataFrame schema before exporting.
-- Secure handling of API keys via environment variables (e.g., BINANCE_API_KEY, BINANCE_API_SECRET). Do not print secrets.
+- Correct pagination for historical ranges (Binance MAX_LIMIT=1000).
+- Convert timestamps to UTC, present date strings in ISO 8601 (e.g., 2021-01-01T00:00:00Z).
+- Output: one CSV per asset named <ASSET>.csv.
+- API keys should be optional: support unauthenticated public klines; if auth is used, keys must come from environment variables.
+- The main extraction function signature should be:
+  def extract_ohlcv(asset: str, start_date: str, end_date: Optional[str], interval: str, output_dir: str) -> pandas.DataFrame
 
 4) Technical requirements
 - Language: Python 3.10+
-- Libraries: binance-connector (or python-binance if preferred), pandas, python-dotenv (optional), requests, tenacity (or custom retry implementation)
-- Tests: at minimum a sanity test validating output format (see prompts/evaluation_rubric.md)
+- Libraries: pandas, requests, python-dotenv (optional), tenacity (optional)
+- The code should include basic logging (logging module) and an option to enable verbose output.
+- Tests: include a minimal unit test for _parse_klines_response and a validation script to assert output shape.
 
-5) Expected output
-- A Python script executable from the console
-- Clear console messages: start, progress per asset, final: "Data extraction finished :)"
-- Proper error handling and exit codes.
+5) Deliverables (what the model should return)
+- A single Python file implementing the extraction logic with:
+  - Module-level docstring including prompt provenance (prompt_id, prompt_version, date)
+  - Public function extract_ohlcv(...) described above
+  - A CLI entrypoint (if __name__ == "__main__") or a separate cli.py file invocation example
+  - Clear comments for steps: pagination, backoff, parsing, CSV export
+- Minimal README snippet showing how to run the script and required environment variables.
 
-6) Restrictions / DOs & DON'Ts
-- DO: Create small, reusable functions.
-- DO: Comment complex sections (pagination, rate limit handling).
-- DO: Respect token/response limits when instructing models to return only code.
-- DON'T: Hardcode credentials.
-- DON'T: Use unmentioned libraries without justification.
+6) DOs & DON'Ts
+- DO: Return ONLY a single code block when asked to provide code.
+- DO: Use environment variables for secrets; provide a .env.example for dev convenience.
+- DO: Add provenance metadata at top of file (model name, prompt_id, generation timestamp).
+- DON'T: Hardcode secrets or API keys in outputs.
+- DON'T: Use proprietary or obscure libraries without justification.
 
 7) Example I/O (expected)
-Input (parameters):
+Input:
 - assets = ["BTCUSDT","ETHUSDT"]
 - start_date = "2021-01-01"
 - timeframe = "1d"
 
-Expected CSV: BTCUSDT.csv
+Expected CSV (BTCUSDT.csv)
 Date,Open,High,Low,Close,Volume
-2021-01-01,29374.15,29600.00,29000.00,29300.00,1234.56
+2021-01-01T00:00:00Z,29374.15,29600.00,29000.00,29300.00,1234.56
 ...
 
-8) Validation (Checklist)
-- [ ] Date as DatetimeIndex in UTC.
-- [ ] Columns present and types correct.
-- [ ] CSV files written correctly.
-- [ ] Retries implemented for 429/5xx responses.
-- [ ] Code executable from console with final output message.
+8) Validation checklist
+- [ ] Date column is DatetimeIndex in UTC in returned DataFrame
+- [ ] CSV Date format is ISO 8601 (UTC)
+- [ ] Columns present and numeric dtypes are floats
+- [ ] Pagination and backoff logic present and documented
+- [ ] No hardcoded secrets; usage of environment variables documented
 
-9) Evaluation rubric (summary)
-See prompts/evaluation_rubric.md for detailed scoring:
-- DataFrame correctness (0-40)
-- Robustness (retries, rate limits) (0-20)
-- Security (no secrets) (0-10)
-- Code quality (modularity, comments) (0-20)
-- Console UX and messages (0-10)
+9) Generation instructions (example to send to an LLM)
+System: You are an assistant expert in Python and financial APIs. Generate ONLY the requested Python file and nothing else.
+User: Implement a Python script that meets all requirements above. Include module-level provenance metadata (prompt_id, prompt_version). Use requests for REST klines fetching and provide a connector fallback only as optional. Make sure the CSVs follow the exact schema.
 
 This prompt without any modification has been used to generate the 3 code examples found in: [code_output_example_by_model](https://github.com/alearisteguieta/Binance-Futures-OHLCV-Extractor/tree/7fbfdcfba5e3043de850027e0f1d2efe4b84c924/code_output_example_by_model) with the Chat GPT-5, Gemini 2.5 pro and Claude 4 sonnet models.
-
-## Generation prompt (example to send to an LLM)
-
-System: You are an assistant expert in Python development and financial APIs. Respond by generating ONLY the requested Python file.
-User: Implement a Python script that meets all requirements in this template. Use the official Binance USDT Futures interface, correct pagination, retries, and export one CSV per asset. Define extract_ohlcv(...) and a main() that processes a list of assets. Do not include keys in the code; use environment variables.
-
-
