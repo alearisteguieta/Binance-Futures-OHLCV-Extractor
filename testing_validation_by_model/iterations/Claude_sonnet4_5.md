@@ -7,7 +7,7 @@ to generate error-free code after testing in Visual Studio Code.
 Here, you can see the entire process, from entering the initial prompt (financial_framework_template.md) to the final output and any corrections made. 
 We recommend using this guide as a reference for your own iterations.
 
-Prompt imput: 
+### Prompt imput: 
 
 ```bash
 
@@ -61,14 +61,14 @@ The code should be robust to handle the provided list of assets without errors.
 
 ```
 
-Claude response: 
+### Claude response: 
 
 ```python
 #!/usr/bin/env python3
 """
 Binance Crypto Data Extractor
-Extrae datos históricos de mercado (candlestick) desde la API de Binance
-y los exporta a archivos CSV individuales para cada activo.
+Extracts historical market data (candlestick) from the Binance API
+and exports them to individual CSV files for each asset.
 """
 
 import os
@@ -78,114 +78,114 @@ from binance.spot import Spot
 
 def criptodata(symbol):
     """
-    Extrae datos históricos de candlestick para un símbolo específico desde Binance
-    
+    Extracts historical candlestick data for a specific symbol from Binance
+
     Args:
-        symbol (str): Símbolo del activo (ej. 'BTCUSDT')
-    
+        symbol (str): Asset symbol (e.g. 'BTCUSDT')
+
     Returns:
-        pandas.DataFrame: DataFrame con los datos históricos procesados
+        pandas.DataFrame: DataFrame with processed historical data
     """
-    
-    # Configuración de API keys de forma segura
-    # IMPORTANTE: Nunca hardcodear las API keys en el código
+
+    # Secure API key configuration
+    # IMPORTANT: Never hardcode API keys in the code
     api_key = os.getenv('BINANCE_API_KEY')
     api_secret = os.getenv('BINANCE_API_SECRET')
-    
+
     if not api_key or not api_secret:
-        print("⚠️  Advertencia: API keys no encontradas en variables de entorno.")
-        print("   Para datos públicos (históricos), Binance no requiere autenticación.")
-        print("   Continuando sin autenticación...")
+        print("⚠️  Warning: API keys not found in environment variables.")
+        print("   For public data (historical), Binance does not require authentication.")
+        print("   Continuing without authentication...")
         client = Spot()
     else:
-        # Inicializar cliente de Binance con autenticación
+        # Initialize Binance client with authentication
         client = Spot(api_key=api_key, api_secret=api_secret)
-    
-    # Definir fechas de inicio y fin
+
+    # Define start and end dates
     start_date = datetime(2021, 1, 1, tzinfo=timezone.utc)
-    end_date = datetime.now(timezone.utc) - timedelta(days=1)  # Día anterior
-    
-    print(f"📈 Extrayendo datos para {symbol} desde {start_date.strftime('%Y-%m-%d')} hasta {end_date.strftime('%Y-%m-%d')}")
-    
+    end_date = datetime.now(timezone.utc) - timedelta(days=1)  # Previous day
+
+    print(f"📈 Extracting data for {symbol} from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
+
     try:
-        # Convertir fechas a timestamps en milisegundos (formato requerido por Binance)
+        # Convert dates to timestamps in milliseconds (format required by Binance)
         start_timestamp = int(start_date.timestamp() * 1000)
         end_timestamp = int(end_date.timestamp() * 1000)
-        
-        # Obtener datos de candlestick históricos
-        # Parámetros: symbol, interval, startTime, endTime, limit
+
+        # Get historical candlestick data
+        # Parameters: symbol, interval, startTime, endTime, limit
         klines = client.klines(
             symbol=symbol,
-            interval='1d',  # Timeframe diario
+            interval='1d',  # Daily timeframe
             startTime=start_timestamp,
             endTime=end_timestamp,
-            limit=1000  # Máximo por request
+            limit=1000  # Maximum per request
         )
-        
-        # Verificar si se obtuvieron datos
+
+        # Check if data was obtained
         if not klines:
-            print(f"❌ No se encontraron datos para {symbol}")
+            print(f"❌ No data found for {symbol}")
             return None
-        
-        # Crear DataFrame con los datos obtenidos
-        # Estructura de klines: [timestamp, open, high, low, close, volume, close_time, ...]
+
+        # Create DataFrame with obtained data
+        # klines structure: [timestamp, open, high, low, close, volume, close_time, ...]
         df = pd.DataFrame(klines, columns=[
             'timestamp', 'open', 'high', 'low', 'close', 'volume',
             'close_time', 'quote_asset_volume', 'number_of_trades',
             'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'
         ])
-        
-        # Seleccionar solo las columnas necesarias
+
+        # Select only necessary columns
         df = df[['timestamp', 'open', 'high', 'low', 'close', 'volume']]
-        
-        # Convertir timestamp a fecha legible
+
+        # Convert timestamp to readable date
         df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms', utc=True)
-        
-        # Renombrar columnas según requerimientos
+
+        # Rename columns according to requirements
         df.columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
-        
-        # Convertir valores numéricos (vienen como strings desde la API)
+
+        # Convert numeric values (they come as strings from the API)
         numeric_columns = ['Open', 'High', 'Low', 'Close', 'Volume']
         df[numeric_columns] = df[numeric_columns].astype(float)
-        
-        # Establecer la fecha como índice
+
+        # Set date as index
         df.set_index('Date', inplace=True)
-        
-        # Ordenar por fecha (más antigua primero)
+
+        # Sort by date (oldest first)
         df.sort_index(inplace=True)
-        
-        # Exportar a CSV
+
+        # Export to CSV
         filename = f"{symbol}.csv"
         df.to_csv(filename)
-        
-        print(f"✅ Datos exportados exitosamente a {filename}")
-        print(f"   Registros: {len(df)}")
-        print(f"   Rango: {df.index.min().strftime('%Y-%m-%d')} a {df.index.max().strftime('%Y-%m-%d')}")
-        
+
+        print(f"✅ Data successfully exported to {filename}")
+        print(f"   Records: {len(df)}")
+        print(f"   Range: {df.index.min().strftime('%Y-%m-%d')} to {df.index.max().strftime('%Y-%m-%d')}")
+
         return df
-        
+
     except Exception as e:
-        print(f"❌ Error al procesar {symbol}: {str(e)}")
+        print(f"❌ Error processing {symbol}: {str(e)}")
         return None
 
 def main():
     """
-    Función principal que procesa todos los activos especificados
+    Main function that processes all specified assets
     """
-    
-    print("🚀 Iniciando extracción de datos de Binance")
+
+    print("🚀 Starting Binance data extraction")
     print("=" * 50)
-    
-    # Lista de activos a procesar
+
+    # List of assets to process
     assets = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'XRPUSDT']
-    
+
     successful_extractions = []
     failed_extractions = []
-    
-    # Procesar cada activo
+
+    # Process each asset
     for asset in assets:
-        print(f"\n📊 Procesando {asset}...")
-        
+        print(f"\n📊 Processing {asset}...")
+
         try:
             df = criptodata(asset)
             if df is not None:
@@ -193,40 +193,40 @@ def main():
             else:
                 failed_extractions.append(asset)
         except Exception as e:
-            print(f"❌ Error inesperado procesando {asset}: {str(e)}")
+            print(f"❌ Unexpected error processing {asset}: {str(e)}")
             failed_extractions.append(asset)
-    
-    # Resumen final
+
+    # Final summary
     print("\n" + "=" * 50)
-    print("📈 RESUMEN DE EXTRACCIÓN")
+    print("📈 EXTRACTION SUMMARY")
     print("=" * 50)
-    
+
     if successful_extractions:
-        print(f"✅ Extracciones exitosas ({len(successful_extractions)}):")
+        print(f"✅ Successful extractions ({len(successful_extractions)}):")
         for asset in successful_extractions:
             print(f"   • {asset}.csv")
-    
+
     if failed_extractions:
-        print(f"❌ Extracciones fallidas ({len(failed_extractions)}):")
+        print(f"❌ Failed extractions ({len(failed_extractions)}):")
         for asset in failed_extractions:
             print(f"   • {asset}")
-    
-    print(f"\nTotal procesados: {len(assets)}")
-    print(f"Exitosos: {len(successful_extractions)}")
-    print(f"Fallidos: {len(failed_extractions)}")
-    
+
+    print(f"\nTotal processed: {len(assets)}")
+    print(f"Successful: {len(successful_extractions)}")
+    print(f"Failed: {len(failed_extractions)}")
+
     print("\n🎉 Data extraction finished :)")
 
 if __name__ == "__main__":
-    # Verificar dependencias
+    # Check dependencies
     try:
         import binance
     except ImportError:
-        print("❌ Error: La librería 'binance-connector' no está instalada.")
-        print("   Instala con: pip install python-binance")
+        print("❌ Error: The 'binance-connector' library is not installed.")
+        print("   Install with: pip install python-binance")
         exit(1)
-    
-    # Ejecutar función principal
+
+    # Execute main function
     main()
 ```
 
@@ -283,4 +283,229 @@ bash
 `python script.py`
 
 The script will generate one CSV file per asset (`BTCUSDT.csv`, `ETHUSDT.csv`, etc.) with a detailed summary of the process at the end, including the confirmation message "Data extraction finished :)".
+```
+## The orinal output give us this error: 
+```bash 
+Traceback (most recent call last):
+  File "c:\Users\VenapGames\Python Curso 1\Claude Pruebas.py", line 11, in <module>
+    from binance.spot import Spot
+ModuleNotFoundError: No module named 'binance.spot'
+PS C:\Users\VenapGames>
+```
+
+## Output Claude code correction
+
+```python
+#!/usr/bin/env python3
+"""
+Binance Crypto Data Extractor
+Extracts historical market data (candlestick) from the Binance API
+and exports it to individual CSV files for each asset.
+"""
+import os
+import pandas as pd
+import requests
+from datetime import datetime, timezone, timedelta
+def criptodata(symbol):
+"""
+Extracts historical candlestick data for a specific symbol from Binance
+Args:
+    symbol (str): Asset symbol (e.g., 'BTCUSDT')
+
+Returns:
+    pandas.DataFrame: DataFrame with processed historical data
+"""
+
+# Base URL of the public Binance API (no authentication required for historical data)
+base_url = "<https://api.binance.com>"
+
+# Define start and end dates
+start_date = datetime(2021, 1, 1, tzinfo=timezone.utc)
+end_date = datetime.now(timezone.utc) - timedelta(days=1)  # Previous day
+
+print(f"📈 Extracting data for {symbol} from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
+
+try:
+    # Convert dates to timestamps in milliseconds (format required by Binance)
+    start_timestamp = int(start_date.timestamp() * 1000)
+    end_timestamp = int(end_date.timestamp() * 1000)
+
+    # Get historical candlestick data using requests
+    # Binance endpoint for klines (candlestick data)
+    endpoint = f"{base_url}/api/v3/klines"
+
+    # Parameters for the query
+    params = {
+        'symbol': symbol,
+        'interval': '1d',  # Daily timeframe
+        'startTime': start_timestamp,
+        'endTime': end_timestamp,
+        'limit': 1000  # Maximum per request
+    }
+
+    # Make API request
+    response = requests.get(endpoint, params=params)
+
+    # Verify if the request was successful
+    if response.status_code != 200:
+        print(f"❌ API Error: {response.status_code} - {response.text}")
+        return None
+
+    # Get JSON data
+    klines = response.json()
+
+    # Check if data was received
+    if not klines:
+        print(f"❌ No data found for {symbol}")
+        return None
+
+    # Create DataFrame with the obtained data
+    # Klines structure: [timestamp, open, high, low, close, volume, close_time, ...]
+    df = pd.DataFrame(klines, columns=[
+        'timestamp', 'open', 'high', 'low', 'close', 'volume',
+        'close_time', 'quote_asset_volume', 'number_of_trades',
+        'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'
+    ])
+
+    # Select only necessary columns
+    df = df[['timestamp', 'open', 'high', 'low', 'close', 'volume']]
+
+    # Convert timestamp to readable date
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms', utc=True)
+
+    # Rename columns according to requirements
+    df.columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+
+    # Convert numeric values (they come as strings from the API)
+    numeric_columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+    df[numeric_columns] = df[numeric_columns].astype(float)
+
+    # Set date as index
+    df.set_index('Date', inplace=True)
+
+    # Sort by date (oldest first)
+    df.sort_index(inplace=True)
+
+    # Export to CSV
+    filename = f"{symbol}.csv"
+    full_path = os.path.abspath(filename)
+    df.to_csv(filename)
+
+    print(f"✅ Data successfully exported to:")
+    print(f"   📁 Full path: {full_path}")
+    print(f"   Records: {len(df)}")
+    print(f"   Range: {df.index.min().strftime('%Y-%m-%d')} to {df.index.max().strftime('%Y-%m-%d')}")
+
+    return df
+
+except Exception as e:
+    print(f"❌ Error processing {symbol}: {str(e)}")
+    return None def main():
+"""
+Main function that processes all the specified assets
+""" print("🚀 Starting Binance data extraction")
+print("=" * 50)
+
+# List of assets to process
+assets = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'XRPUSDT']
+
+successful_extractions = []
+failed_extractions = []
+
+# Process each asset
+for asset in assets:
+    print(f"\n📊 Processing {asset}...")
+
+    try:
+        df = criptodata(asset)
+        if df is not None:
+            successful_extractions.append(asset)
+        else:
+            failed_extractions.append(asset)
+    except Exception as e:
+        print(f"❌ Unexpected error processing {asset}: {str(e)}")
+        failed_extractions.append(asset)
+
+# Final summary
+print("\n" + "=" * 50)
+print("📈 EXTRACTION SUMMARY")
+print("=" * 50)
+
+if successful_extractions:
+    print(f"✅ Successful extractions ({len(successful_extractions)}):")
+    for asset in successful_extractions:
+        print(f"   • {asset}.csv")
+
+if failed_extractions:
+    print(f"❌ Failed extractions ({len(failed_extractions)}):")
+    for asset in failed_extractions:
+        print(f"   • {asset}")
+
+print(f"\nTotal processed: {len(assets)}")
+print(f"Successful: {len(successful_extractions)}")
+print(f"Failed: {len(failed_extractions)}")
+
+print("\n🎉 Data extraction finished :)") if __name__ == "__main__":
+    # Check dependencies
+    try:
+        import requests
+        import pandas as pd
+    except ImportError as e:
+        print(f"❌ Error: Missing dependencies: {e}")
+        print("   Install with: pip install requests pandas")
+        exit(1)# Execute main function
+main()
+```
+
+## Running code in Visual Studio Code:
+
+```bash 
+Claude 4:
+
+🚀 Starting Binance data extraction
+📁 Working directory: C:\Users\pcuser
+📄 CSV files will be saved in: C:\Users\pcuser
+
+📊 Processing BTCUSDT...
+📈 Extracting data for BTCUSDT from 2021-01-01 to 2025-09-23
+✅ Data successfully exported to:
+📁 Full path: C:\Users\pcuser\BTCUSDT.csv
+Records: 1000
+Range: 2021-01-01 to 2023-09-27
+
+📊 Processing ETHUSDT...
+📈 Extracting data for ETHUSDT from 2021-01-01 to 2025-09-23
+✅ Data successfully exported to:
+📁 Full path: C:\Users\pcuser\ETHUSDT.csv
+Records: 1000
+Range: 2021-01-01 to 2023-09-27
+
+📊 Processing ADAUSDT...
+📈 Extracting data for ADAUSDT from 2021-01-01 to 2025-09-23
+✅ Data successfully exported to:
+📁 Full path: C:\Users\pcuser\ADAUSDT.csv
+Records: 1000
+Range: 2021-01-01 to 2023-09-27
+
+📊 Processing XRPUSDT...
+📈 Extracting data for XRPUSDT from 2021-01-01 to 2025-09-23
+✅ Data successfully exported to:
+📁 Full path: C:\Users\pcuser\XRPUSDT.csv
+Records: 1000
+Range: 2021-01-01 to 2023-09-27
+📈 EXTRACTION SUMMARY
+
+✅ Successful extractions (4):
+• BTCUSDT.csv
+📁 C:\Users\pcuser\BTCUSDT.csv
+
+- ETHUSDT.csv
+📁 C:\Users\pcuser\ETHUSDT.csv
+- ADAUSDT.csv
+📁 C:\Users\pcuser\ADAUSDT.csv
+- XRPUSDT.csv
+📁 C:\Users\pcuser\XRPUSDT.csvTotal processed: 4
+Successful: 4
+Failed: 0🎉 Data extraction finished :)
+PS C:\Users\pcuser>
 ```
