@@ -3,51 +3,51 @@ from binance.client import Client
 from datetime import datetime, timedelta
 import os
 
-# --- Configuración de Seguridad y Entorno ---
+# --- Security and Environment Configuration ---
 API_KEY = os.environ.get('BINANCE_API_KEY', '') 
 API_SECRET = os.environ.get('BINANCE_API_SECRET', '')
 
-# --- Constantes del Requerimiento ---
+# --- Requirement Constants ---
 ASSETS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'XRPUSDT']
 TIMEFRAME = Client.KLINE_INTERVAL_1DAY 
 START_DATE = '2021-01-01' 
 
-# --- NUEVO ARREGLO: Ruta de Exportación ---
-# La carpeta se creará en el mismo directorio donde ejecutas el script.
-OUTPUT_DIR = 'datos_binance' 
+# --- NEW ARRAY: Export Path ---
+# The folder will be created in the same directory where you run the script.
+OUTPUT_DIR = 'binance_data' 
 
-# Función para obtener la fecha de ayer
+# Function to get yesterday's date
 def get_yesterday_date():
-    """Calcula y devuelve la fecha de ayer como string 'YYYY-MM-DD'."""
+    """Calculates and returns yesterday's date as a 'YYYY-MM-DD' string."""
     yesterday = datetime.now() - timedelta(days=1)
     return yesterday.strftime('%Y-%m-%d')
 
 END_DATE = get_yesterday_date() 
 
 
-# --- Función Principal de Extracción de Datos ---
+# --- Main Data Extraction Function ---
 def get_crypto_data(symbol: str, interval: str, start_str: str, end_str: str, output_path: str):
     """
-    Extrae datos históricos de la API de futuros de Binance y los exporta a un CSV
-    en la ruta especificada.
+    Extracts historical data from Binance futures API and exports it to a CSV
+    at the specified path.
     
     Args:
-        symbol (str): Ticker del activo.
+        symbol (str): Asset ticker.
         interval (str): Timeframe.
-        start_str (str): Fecha de inicio.
-        end_str (str): Fecha de fin.
-        output_path (str): Directorio donde se guardará el CSV.
+        start_str (str): Start date.
+        end_str (str): End date.
+        output_path (str): Directory where the CSV will be saved.
         
     Returns:
-        pd.DataFrame: DataFrame de pandas con los datos o None.
+        pd.DataFrame: Pandas DataFrame with the data or None.
     """
-    # Inicializar el cliente
+    # Initialize the client
     client = Client(API_KEY, API_SECRET)
 
-    print(f"-> Extrayendo datos para {symbol} desde {start_str} hasta {end_str}...")
+    print(f"-> Extracting data for {symbol} from {start_str} to {end_str}...")
 
     try:
-        # Usamos futures_historical_klines que maneja la paginación.
+        # We use futures_historical_klines which handles pagination.
         klines = client.futures_historical_klines(
             symbol=symbol,
             interval=interval,
@@ -56,10 +56,10 @@ def get_crypto_data(symbol: str, interval: str, start_str: str, end_str: str, ou
         )
 
     except Exception as e:
-        print(f"Error al obtener datos de la API para {symbol}: {e}")
+        print(f"Error getting data from API for {symbol}: {e}")
         return None
 
-    # Columnas esperadas de la API
+    # Expected columns from the API
     cols = [
         'Open Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'Close Time',
         'Quote Asset Volume', 'Number of Trades', 'Taker Buy Base Asset Volume',
@@ -68,7 +68,7 @@ def get_crypto_data(symbol: str, interval: str, start_str: str, end_str: str, ou
 
     df = pd.DataFrame(klines, columns=cols)
 
-    # --- Procesamiento de Datos ---
+    # --- Data Processing ---
     df = df[['Open Time', 'Open', 'High', 'Low', 'Close', 'Volume']].copy()
     df['Date'] = pd.to_datetime(df['Open Time'], unit='ms')
     df.drop('Open Time', axis=1, inplace=True)
@@ -78,30 +78,30 @@ def get_crypto_data(symbol: str, interval: str, start_str: str, end_str: str, ou
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col])
 
-    # 6. Exportar a CSV en la RUTA ESPECIFICADA
+    # 6. Export to CSV at the SPECIFIED PATH
     filename = f"{symbol}.csv"
     full_path = os.path.join(output_path, filename)
     
     df.to_csv(full_path)
-    print(f"-> Datos de {symbol} guardados exitosamente en: {full_path}. Filas: {len(df)}")
+    print(f"-> {symbol} data successfully saved to: {full_path}. Rows: {len(df)}")
 
     return df
 
 
-# --- Ejecución Principal del Script ---
+# --- Main Script Execution ---
 if __name__ == '__main__':
-    print("--- Inicio de Extracción de Datos de Mercado de Binance ---")
+    print("--- Starting Binance Market Data Extraction ---")
     
-    # 1. Crear el directorio de salida si no existe
+    # 1. Create output directory if it doesn't exist
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
-        print(f"Directorio de salida creado: {OUTPUT_DIR}")
+        print(f"Output directory created: {OUTPUT_DIR}")
         
-    print(f"Rango de Fechas: {START_DATE} a {END_DATE} (Timeframe: 1 Day)")
+    print(f"Date Range: {START_DATE} to {END_DATE} (Timeframe: 1 Day)")
     print("-" * 50)
 
     for asset in ASSETS:
-        # 2. Pasar la ruta de salida a la función
+        # 2. Pass the output path to the function
         get_crypto_data(
             symbol=asset,
             interval=TIMEFRAME,
