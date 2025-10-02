@@ -1,6 +1,8 @@
 # Claude Sonnet 4.5 Console Print() Example
 
-This Print() function represents the original output shown in the console. This code went through two iterations before displaying 
+- In this case, the same prompt was used for all models. You can see the complete example in ChatGPT-5.md
+
+- This Print() function represents the original output shown in the console. This code went through two iterations before displaying 
 this result in the console without errors, which you can see in the iterations folder.
 
 ```
