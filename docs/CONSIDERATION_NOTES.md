@@ -1,7 +1,7 @@
 # Extraction Notes
 
 ### Audience
-Maintainers and contributors
+Prompts Engineers, AI Fluency Workers, Software Developers, AI Enthusiastic, Maintainers and Contributors.
 
 ### Purpose
 This document describes the practical aspects of the Binance Futures klines endpoint and explains the extractor’s operational choices.  
