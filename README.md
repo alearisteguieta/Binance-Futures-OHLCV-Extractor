@@ -44,13 +44,6 @@ This repository demonstrates how prompt engineering accelerates the development 
 It documents prompt design, model iterations, generated code examples, and a small test-suite validating parsing behavior.
 The extractor focuses on Binance USDT‑M futures public klines and provides a portable, well-documented foundation for quant research.
 
-### Quick links
-- Core library: src/binance_ohlcv_extractor/
-- CLI: python -m binance_ohlcv_extractor.cli
-- Prompts: prompts/
-- Iterations & validation: testing_validation_by_model/
-- Docs: docs/
-
 ### Quickstart (1-minute)
 1. Create and activate a virtual environment:
    - python -m venv .venv && source .venv/bin/activate  (Unix)
@@ -65,7 +58,7 @@ The extractor focuses on Binance USDT‑M futures public klines and provides a p
 - A small, tested core module that parses Binance klines and exports CSVs.
 - Documentation on prompt architecture, evaluation rubrics, and iteration logs.
 
-Repository conventions
+### Repository conventions
 - Language: English for all user-facing documentation and printed messages.
 - Provenance: every generated code file should include a short header with model, prompt_id, generation timestamp and run parameters.
 - Golden outputs: store model outputs and metadata under testing_validation_by_model/golden_outputs/<model>/<timestamp>/
