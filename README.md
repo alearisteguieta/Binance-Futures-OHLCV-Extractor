@@ -13,6 +13,8 @@ This tool is engineered for high reliability, featuring an automated fallback to
 
 - Status: Work in progress — Case study and reproducible prompt engineering workflow.
 
+Alejandro Sanchez Aristeguieta
+
 ## 💡 Prompt Engineering & AI Fluency: The High-Reliability Framework
 
 This repository demonstrates Prompt Engineering for robust financial tooling, including dependency-fallback architecture, pagination safety, and data quality guarantees.
