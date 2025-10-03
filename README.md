@@ -11,7 +11,7 @@ At its core, the project is a robust Python utility designed for extracting hist
 
 This tool is engineered for high reliability, featuring an automated fallback to direct REST API calls if the official Binance connector library is not installed or fails, ensuring maximum data retrieval stability for your Quantitative Finance and Machine Learning projects.
 
-- Status: Work in progress — Case study and reproducible prompt engineering workflow.
+- Work in progress — Case study and reproducible prompt engineering workflow.
 
 Alejandro Sanchez Aristeguieta
 
